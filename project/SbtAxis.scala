@@ -8,7 +8,9 @@ case class SbtAxis(fullVersion: Option[String], idSuffix: String, directorySuffi
     extends VirtualAxis.WeakAxis {
   val scalaVersion: String =
     fullVersion.map(VersionNumber(_)) match {
-      case Some(VersionNumber(Seq(1, _*), _, _)) | None => "2.12.10"
+      case Some(VersionNumber(Seq(0, 13, _*), _, _))    => "2.10.7"
+      case Some(VersionNumber(Seq(1, _*), _, _)) | None => "2.12.20"
+      case Some(VersionNumber(Seq(2, _*), _, _))        => "3.7.2"
       case _                                            => sys.error(s"Unsupported sbt version: $fullVersion")
     }
 }

@@ -24,17 +24,42 @@ ThisBuild / publishTo                        := {
   else localStaging.value
 }
 
-ThisBuild / scalacOptions := Seq("-deprecation", "-unchecked", "-feature")
+ThisBuild / scalacOptions := {
+  val base = Seq("-deprecation", "-unchecked", "-feature")
+  CrossVersion.partialVersion(scalaVersion.value) match {
+    case Some((2, _)) => base ++ Seq("-Xsource:3")
+    case _            => base
+  }
+}
+
+ThisBuild / (pluginCrossBuild / sbtVersion) := {
+  scalaBinaryVersion.value match {
+    case "2.12" => "1.11.7"
+    case "3"    => "2.0.0-RC7"
+    case _      => sbtVersion.value
+  }
+}
 
 lazy val `sbt-1.x`    = SbtAxis("1.x", "1.1.5")
 lazy val `sbt-latest` = SbtAxis()
 lazy val `sbt-1.0.0`  = SbtAxis("1.0.0")
+
+lazy val `sbt-2.0`    = SbtAxis("2.0", "2.0.0-RC7")
+
+lazy val `sbt-0.13.x`  = SbtAxis("0.13.x", "0.13.16")
+lazy val `sbt-0.13.16` = SbtAxis("0.13.16")
+lazy val `sbt-0.13.9`  = SbtAxis("0.13.9")
 
 lazy val `sbt-updates` = (projectMatrix in file("."))
   .settings(libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.19" % "test")
   .sbtPluginRow(`sbt-1.x`)
   .sbtScriptedRow(`sbt-1.0.0`, `sbt-1.x`)
   .sbtScriptedRow(`sbt-latest`, `sbt-1.x`)
+  .sbtPluginRow(`sbt-2.0`)
+  .sbtScriptedRow(`sbt-2.0`, `sbt-2.0`)
+  .sbtPluginRow(`sbt-0.13.x`)
+  .sbtScriptedRow(`sbt-0.13.9`, `sbt-0.13.x`)
+  .sbtScriptedRow(`sbt-0.13.16`, `sbt-0.13.x`)
 
 lazy val root = (project in file("."))
   .withId("sbt-updates")
