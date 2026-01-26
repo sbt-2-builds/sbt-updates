@@ -27,8 +27,8 @@ ThisBuild / publishTo                        := {
 ThisBuild / scalacOptions := {
   val base = Seq("-deprecation", "-unchecked", "-feature")
   CrossVersion.partialVersion(scalaVersion.value) match {
-    case Some((2, _)) => base ++ Seq("-Xsource:3")
-    case _            => base
+    case Some((2, minor)) if minor >= 12 => base ++ Seq("-Xsource:3")
+    case _                                => base
   }
 }
 
