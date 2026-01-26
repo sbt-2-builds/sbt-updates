@@ -28,4 +28,6 @@ object Compat {
   def toDirectCredentials(c: sbt.Credentials) = {
     sbt.Credentials.toDirect(c)
   }
+
+  def uncached[T](task: => T): T = task
 }
