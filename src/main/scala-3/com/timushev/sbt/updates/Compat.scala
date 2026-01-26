@@ -1,6 +1,7 @@
 package com.timushev.sbt.updates
 
-import sbt.ModuleID
+import sbt.Keys._
+import sbt._
 
 object Compat {
   type ModuleFilter     = sbt.librarymanagement.ModuleFilter
@@ -9,5 +10,10 @@ object Compat {
 
   implicit class ModuleIDExt(val module: ModuleID) {
     def withRevision0(revision: String): ModuleID = module.withRevision(revision)
+  }
+
+  def createScopedKey[T](settingKey: SettingKey[T], projRef: ProjectRef): ScopedKey[T] = {
+    val scope = GlobalScope.copy(project = Select(projRef))
+    Scoped.scopedSetting(scope, settingKey.key).scopedKey
   }
 }
