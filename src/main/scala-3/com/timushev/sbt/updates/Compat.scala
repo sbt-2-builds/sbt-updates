@@ -24,4 +24,9 @@ object Compat {
   def inThisBuild[T](key: SettingKey[T]): Def.Initialize[T] = {
     ThisBuild / key
   }
+
+  def toDirectCredentials(c: sbt.Credentials) = {
+    import sbt.internal.librarymanagement.ivy.IvyCredentials
+    IvyCredentials.toDirect(c)
+  }
 }

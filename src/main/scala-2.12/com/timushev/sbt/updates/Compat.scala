@@ -24,4 +24,8 @@ object Compat {
   def inThisBuild[T](key: SettingKey[T]): Def.Initialize[T] = {
     ThisBuild / key
   }
+
+  def toDirectCredentials(c: sbt.Credentials) = {
+    sbt.Credentials.toDirect(c)
+  }
 }
