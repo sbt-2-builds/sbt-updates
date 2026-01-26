@@ -14,8 +14,8 @@ object DependencyPositions {
         val st        = state.value
         val sk        = Compat.createScopedKey(libraryDependencies, projRef)
         val extracted = Project.extract(st)
-        val empty     = extracted.structure.data.set(sk.scope, sk.key, Nil)
-        val settings  = extracted.structure.settings.filter { s =>
+        val empty     = Compat.setSetting(extracted.structure.data, sk, Nil)
+        val settings = extracted.structure.settings.filter { s =>
           (s.key.key == libraryDependencies.key) && (s.key.scope.project == Select(projRef))
         }
         settings

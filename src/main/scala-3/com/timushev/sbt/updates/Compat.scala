@@ -16,4 +16,8 @@ object Compat {
     val scope = GlobalScope.copy(project = Select(projRef))
     Scoped.scopedSetting(scope, settingKey.key).scopedKey
   }
+
+  def setSetting[T](data: Def.Settings, scopedKey: ScopedKey[T], value: T): Def.Settings = {
+    data.set(scopedKey, value)
+  }
 }

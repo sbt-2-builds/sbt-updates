@@ -11,4 +11,8 @@ object Compat {
   def createScopedKey[T](settingKey: SettingKey[T], projRef: ProjectRef): ScopedKey[T] = {
     settingKey.in(GlobalScope.in(projRef)).scopedKey
   }
+
+  def setSetting[T](data: sbt.Settings[sbt.Scope], scopedKey: ScopedKey[T], value: T): sbt.Settings[sbt.Scope] = {
+    data.set(scopedKey.scope, scopedKey.key, value)
+  }
 }

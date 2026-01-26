@@ -16,4 +16,8 @@ object Compat {
     val scope = GlobalScope.copy(project = Select(projRef))
     Scoped.scopedSetting(scope, settingKey.key).scopedKey
   }
+
+  def setSetting[T](data: sbt.internal.util.Settings[sbt.Scope], scopedKey: ScopedKey[T], value: T): sbt.internal.util.Settings[sbt.Scope] = {
+    data.set(scopedKey.scope, scopedKey.key, value)
+  }
 }
