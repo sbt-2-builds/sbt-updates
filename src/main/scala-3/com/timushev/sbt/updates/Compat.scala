@@ -20,4 +20,8 @@ object Compat {
   def setSetting[T](data: Def.Settings, scopedKey: ScopedKey[T], value: T): Def.Settings = {
     data.set(scopedKey, value)
   }
+
+  def inThisBuild[T](key: SettingKey[T]): Def.Initialize[T] = {
+    ThisBuild / key
+  }
 }

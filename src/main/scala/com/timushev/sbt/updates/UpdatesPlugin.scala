@@ -34,7 +34,7 @@ object UpdatesPlugin extends AutoPlugin {
         dependencyUpdatesExclusions.value,
         dependencyUpdatesFilter.value,
         dependencyAllowPreRelease.value,
-        (baseDirectory in ThisBuild).value,
+        Compat.inThisBuild(baseDirectory).value,
         streams.value
       ),
     dependencyUpdates :=

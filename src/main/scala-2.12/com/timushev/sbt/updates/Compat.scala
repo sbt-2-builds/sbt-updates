@@ -20,4 +20,8 @@ object Compat {
   def setSetting[T](data: sbt.internal.util.Settings[sbt.Scope], scopedKey: ScopedKey[T], value: T): sbt.internal.util.Settings[sbt.Scope] = {
     data.set(scopedKey.scope, scopedKey.key, value)
   }
+
+  def inThisBuild[T](key: SettingKey[T]): Def.Initialize[T] = {
+    ThisBuild / key
+  }
 }
