@@ -9,9 +9,12 @@ import org.scalatest.matchers.should.Matchers
 class MetadataLoaderFactorySpec extends AnyFreeSpec with Matchers {
   val logger = ConsoleLogger()
 
+  private def mavenCentral: Resolver =
+    Resolver.url("maven-central", new URL("https://repo1.maven.org/maven2/"))(Resolver.mavenStylePatterns)
+
   "A MetadataLoader factory" - {
     "should return a CachingMetadataLoader for maven repositories" in {
-      MetadataLoaderFactory.loader(logger, Nil).apply(Resolver.jcenterRepo) should have(
+      MetadataLoaderFactory.loader(logger, Nil).apply(mavenCentral) should have(
         Symbol("class")(classOf[CachingMetadataLoader])
       )
     }
