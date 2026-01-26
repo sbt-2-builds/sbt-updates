@@ -35,7 +35,14 @@ object SbtAxis {
           sbtPlugin                     := true,
           scalaVersion                  := axis.scalaVersion,
           crossPaths                    := true,
-          pluginCrossBuild / sbtVersion := axis.fullVersion.getOrElse(sbtVersion.value)
+          pluginCrossBuild / sbtVersion := axis.fullVersion.getOrElse(sbtVersion.value),
+          scalacOptions := {
+            val base = Seq("-deprecation", "-unchecked", "-feature")
+            CrossVersion.partialVersion(scalaVersion.value) match {
+              case Some((2, minor)) if minor >= 12 => base ++ Seq("-Xsource:3")
+              case _                                => base
+            }
+          }
         ).settings(ss: _*)
       )
     def sbtScriptedRow(axis: SbtAxis, buildAxis: SbtAxis): ProjectMatrix =
@@ -49,6 +56,13 @@ object SbtAxis {
           pluginCrossBuild / sbtVersion := axis.fullVersion.getOrElse(sbtVersion.value),
           publish / skip                := true,
           compile / skip                := true,
+          scalacOptions := {
+            val base = Seq("-deprecation", "-unchecked", "-feature")
+            CrossVersion.partialVersion(scalaVersion.value) match {
+              case Some((2, minor)) if minor >= 12 => base ++ Seq("-Xsource:3")
+              case _                                => base
+            }
+          },
           // Without this the build fails for sbt 0.13,
           // even though it's not clear why the warning is reported
           conflictWarning      := ConflictWarning.disable,
